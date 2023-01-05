@@ -79,13 +79,71 @@ const stopVideo = () => {
 
 
 
-const updateProgress = () => {
+const updateProgress = (e) => {
+        // console.log(e.srcElement);
+
+        // currentTime and duration keyword came from video API
+        /*
+        // method-2 step-1
+        let current_time = e.target.currentTime;
+        let videoDuration = e.target.duration;
+        */
+
+        /*
+        // Method-2 step-2
+        const {currentTime} = e.target;
+        const {duration} = e.target;
+        console.log(currentTime,duration);
+        */
+
+        /*
+        // Method-2 step-3
+        const {currentTime,duration} = e.target;
+        console.log(currentTime,duration);
+        */
+
+        /*
+        // method-2 step-4
+        const [current_time,videoDuration] = [e.target.currentTime, e.srcElement.duration];
+        console.log(current_time,videoDuration);
+        */
+
+     if(videoScreen.currentTime === 0){
+                progressInput.value = 0;
+     }else{
+         progressInput.value = (videoScreen.currentTime / videoScreen.duration) * 100;
+     }
+//      progressInput.value = (videoScreen.currentTime / videoScreen.duration) * 100;
+
+     let videoMinutes =Math.floor(videoScreen.currentTime/60);
+     let videoSeconds = Math.floor(videoScreen.currentTime%60);
+
+     /*Method-1 for string concatination */
+     /*
+     if(videoMinutes < 10){
+                // videoMinutes = '0' +videoMinutes;
+                videoMinutes = '0' +String(videoMinutes);
+     }
+     if(videoSeconds < 10){
+        // videoSeconds = '0' +videoSeconds;
+        videoSeconds = '0' +String(videoSeconds);
+}
+//      displayTime.innerHTML = `${videoMinutes} : ${videoSeconds}`;
+
+*/
+
+
+          /*Method-2 for string concatination */
+        const videoMinutesValue = videoMinutes.toString().padStart(2,'0');
+        const videoSecondsValue = videoSeconds.toString().padStart(2,'0');
+        displayTime.innerHTML = `${videoMinutesValue} : ${videoSecondsValue}`;
+
 
 }
 
 
 const setProgress = () => {
-
+        videoScreen.currentTime = (progressInput.value*videoScreen.duration)/100;
 }
 
 
@@ -101,3 +159,6 @@ playBtn.addEventListener("click", playAndPaueVideo);
 nextBtn.addEventListener("click",nextVideo);
 prevBtn.addEventListener("click",prevVideo);
 stopBtn.addEventListener("click",stopVideo);
+
+videoScreen.addEventListener('timeupdate', updateProgress);
+progressInput.addEventListener("click", setProgress);
