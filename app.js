@@ -10,8 +10,8 @@ const progressInput = document.getElementById("progress"),
           displayTime   = document.getElementById("displayTime");
 
 const container = document.querySelector(".container"),
-          closeFullScreen       = document.querySelector("closeFullscreen"),
-          openFullScreen        =       document.querySelector(".openFullscreen");
+          closeFullScreen       = document.querySelector("#closeFullscreen"),
+          openFullScreen        =       document.querySelector("#openFullscreen");
 
 
 const videos = ["sample_video_1","sample_video_2"];
@@ -148,11 +148,34 @@ const setProgress = () => {
 
 
 const openFullscreenVideo = () => {
+        const docElement = document.documentElement;
+        if(container.requestFullscreen){
+                container.requestFullscreen();
+        }else if(docElement.mozRequestFullscreen){
+                        docElement.mozRequestFullscreen();
+        }else if(docElement.webkitRequestFullscreen){
+                docElement.webkitRequestFullscreen();
+        }else if(docElement.msRequestFullscreen){
+                docElement.msRequestFullscreen();
+        }
 
+        openFullScreen.style.display = "none";
+        closeFullScreen.style.display = "inline-block"
 }
 
 const closeFullscreenVideo = () => {
+        if(document.exitFullscreen){
+                document.exitFullscreen();
+        }else if(document.mozCancelFullscreen){
+                document.mozCancelFullscreen();
+        }else if(document.webkitExitFullscreen){
+                document.webkitExitFullscreen();
+        }else if(document.msExitFullscreen){
+                document.msExitFullscreen();
+        }
 
+        closeFullScreen.style.display = "none";
+        openFullScreen.style.display = "inline-block";
 }
 
 playBtn.addEventListener("click", playAndPaueVideo);
@@ -162,3 +185,6 @@ stopBtn.addEventListener("click",stopVideo);
 
 videoScreen.addEventListener('timeupdate', updateProgress);
 progressInput.addEventListener("click", setProgress);
+
+openFullScreen.addEventListener("click",openFullscreenVideo);
+closeFullScreen.addEventListener("click",closeFullscreenVideo);
